@@ -12,7 +12,7 @@ datasource db {
 
 // User Model
 model User {
-  id                    String       @id 
+  id                    Int          @id @default(autoincrement())
   name                  String
   password              String
   email                 String       @unique
@@ -26,7 +26,8 @@ model User {
   joiningDate           DateTime     @default(now())
   enrollments           Enrollment[]
   performanceMetrics    PerformanceMetric[]
-  feedbacks            Feedback[]
+  feedbacks             Feedback[]
+  courseRequests        CourseRequest[]
 }
 
 // Role Model
@@ -59,21 +60,24 @@ model Course {
   description           String
   enrollments           Enrollment[]
   performanceMetrics    PerformanceMetric[]
-  feedbacks            Feedback[]
+  feedbacks             Feedback[]
   learningPathCourses   LearningPathCourse[]
+  courseRequests        CourseRequest[]
 }
 
 // Enrollment Model
 model Enrollment {
   id                    Int          @id @default(autoincrement())
   user                  User         @relation(fields: [userId], references: [id])
-  userId                String
+  userId                Int
   course                Course       @relation(fields: [courseId], references: [id])
   courseId              Int
   enrollmentDate        DateTime     @default(now())
   completionStatus      String       // e.g., In Progress, Completed
   completionDate        DateTime?
-  courseCompletion       CourseCompletion[]
+  percentage            Int 
+  lastUpdated           DateTime     @updatedAt // Automatically updated timestamp
+  courseCompletion      CourseCompletion[]
 }
 
 // CourseCompletion Model
@@ -107,7 +111,7 @@ model LearningPathCourse {
 model PerformanceMetric {
   id                    Int          @id @default(autoincrement())
   user                  User         @relation(fields: [userId], references: [id])
-  userId                String
+  userId                Int
   course                Course       @relation(fields: [courseId], references: [id])
   courseId              Int
   completionTime        String       // e.g., "5 hours"
@@ -118,9 +122,20 @@ model PerformanceMetric {
 model Feedback {
   id                    Int          @id @default(autoincrement())
   user                  User         @relation(fields: [userId], references: [id])
-  userId                String
+  userId                Int
   course                Course       @relation(fields: [courseId], references: [id])
   courseId              Int
   rating                Int          // Scale of 1 to 5
   comments              String?
+}
+
+// CourseRequest Model
+model CourseRequest {
+  id                    Int          @id @default(autoincrement())
+  user                  User         @relation(fields: [userId], references: [id])
+  userId                Int
+  course                Course       @relation(fields: [courseId], references: [id])
+  courseId              Int
+  requestDate           DateTime     @default(now())
+  status                String       // e.g., Pending, Approved, Rejected
 }

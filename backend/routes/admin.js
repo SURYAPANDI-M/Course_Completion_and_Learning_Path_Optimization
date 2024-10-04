@@ -1,7 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const {
-  getHomeStats,
+  homeStats,
   getUsers,
   createUser,
   updateUser,
@@ -10,15 +9,21 @@ const {
   createCourse,
   updateCourse,
   deleteCourse,
+  courseAllegation,
+  getNotifications,
+  createNotification,
+  getRequests,
+  handleRequest,
   getDepartments,
   getUsersByDepartmentId,
   getLearningPaths,
   getCoursesByLearningPathId,
-  allocateCourse,
 } = require('../controllers/admin');
 
+const router = express.Router();
+
 // Home Stats
-router.get('/home/stats', getHomeStats);
+router.get('/home-stats', homeStats);
 
 // User Management
 router.get('/users', getUsers);
@@ -32,15 +37,23 @@ router.post('/courses', createCourse);
 router.put('/courses/:id', updateCourse);
 router.delete('/courses/:id', deleteCourse);
 
+// Course Allegation
+router.post('/course-allocation', courseAllegation);
+
+// Notification Management
+router.get('/notifications', getNotifications);
+router.post('/notifications', createNotification);
+
+// Course Requests
+router.get('/requests', getRequests);
+router.put('/requests/:id', handleRequest);
+
 // Department Management
 router.get('/departments', getDepartments);
-router.get('/users/department/:id', getUsersByDepartmentId);
+router.get('/departments/:id/users', getUsersByDepartmentId);
 
 // Learning Path Management
 router.get('/learning-paths', getLearningPaths);
-router.get('/courses/learning-path/:id', getCoursesByLearningPathId);
-
-// Course Allocation
-router.post('/courses/allocation', allocateCourse);
+router.get('/learning-paths/:id/courses', getCoursesByLearningPathId);
 
 module.exports = router;
