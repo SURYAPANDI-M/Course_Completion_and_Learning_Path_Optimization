@@ -1,141 +1,124 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+  generator client {
+    provider = "prisma-client-js"
+  }
 
-generator client {
-  provider = "prisma-client-js"
-}
+  datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+  }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+  model User {
+    name               String
+    employeeId        String               @id @unique
+    password           String
+    email              String               @unique
+    organizationDomain String
+    roleId             Int
+    joiningDate        DateTime            @default(now())
+    designationId      Int
+    departmentId       Int
+    courseRequests     CourseRequest[]
+    enrollments        Enrollment[]
+    feedbacks          Feedback[]
+    performanceMetrics PerformanceMetric[]
+  }
 
-// User Model
-model User {
-  id                    Int          @id @default(autoincrement())
-  name                  String
-  password              String
-  email                 String       @unique
-  organizationDomain    String
-  role                  Role         @relation(fields: [roleId], references: [id])
-  roleId                Int
-  designation           Designation   @relation(fields: [designationId], references: [id])
-  designationId         Int
-  department            Department    @relation(fields: [departmentId], references: [id])
-  departmentId          Int
-  joiningDate           DateTime     @default(now())
-  enrollments           Enrollment[]
-  performanceMetrics    PerformanceMetric[]
-  feedbacks             Feedback[]
-  courseRequests        CourseRequest[]
-}
+  model Role {
+    id    Int    @id @default(autoincrement())
+    name  String @unique
+  }
 
-// Role Model
-model Role {
-  id                    Int          @id @default(autoincrement())
-  name                  String       @unique
-  users                 User[]
-}
+  model Designation {
+    id    Int    @id @default(autoincrement())
+    title String @unique
+  }
 
-// Designation Model
-model Designation {
-  id                    Int          @id @default(autoincrement())
-  title                 String       @unique // e.g., "Software Developer", "Senior Software Developer"
-  users                 User[]
-}
+  model Department {
+    id    Int    @id @default(autoincrement())
+    name  String @unique
+  }
 
-// Department Model
-model Department {
-  id                    Int          @id @default(autoincrement())
-  name                  String       @unique // Unique name for the department
-  users                 User[]       // Relation back to the User model
-}
+  model Course {
+    id                  Int                  @id @default(autoincrement())
+    title               String
+    duration            Int
+    difficultyLevel     String
+    description         String
+    courseRequests      CourseRequest[]
+    enrollments         Enrollment[]
+    feedbacks           Feedback[]
+    
+  learningPathCourses LearningPathCourse[] // Relation to Learning Paths
+    performanceMetrics   PerformanceMetric[]
+  }
 
-// Course Model
-model Course {
-  id                    Int          @id @default(autoincrement())
-  title                 String
-  duration              Int          // Duration in hours
-  difficultyLevel       String
-  description           String
-  enrollments           Enrollment[]
-  performanceMetrics    PerformanceMetric[]
-  feedbacks             Feedback[]
-  learningPathCourses   LearningPathCourse[]
-  courseRequests        CourseRequest[]
-}
+  model Enrollment {
+    id               Int                @id @default(autoincrement())
+    courseId         Int
+    enrollmentDate   DateTime           @default(now())
+    completionStatus String
+    completionDate   DateTime?
+    lastUpdated      DateTime           @updatedAt
+    percentage       Int
+    userId           String              // Refers to employeeId in User model
+    courseCompletion  CourseCompletion[] 
+    course           Course             @relation(fields: [courseId], references: [id])
+    user             User               @relation(fields: [userId], references: [employeeId]) 
+    learningPathId   Int?               // Optional field for linking to a Learning Path
+    learningPath     LearningPath?      @relation(fields: [learningPathId], references: [id])
+  }
+  model CourseCompletion {
+    id              Int        @id @default(autoincrement())
+    enrollmentId    Int
+    score           Float
+    certificateLink String?
+    enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  }
 
-// Enrollment Model
-model Enrollment {
-  id                    Int          @id @default(autoincrement())
-  user                  User         @relation(fields: [userId], references: [id])
-  userId                Int
-  course                Course       @relation(fields: [courseId], references: [id])
-  courseId              Int
-  enrollmentDate        DateTime     @default(now())
-  completionStatus      String       // e.g., In Progress, Completed
-  completionDate        DateTime?
-  percentage            Int 
-  lastUpdated           DateTime     @updatedAt // Automatically updated timestamp
-  courseCompletion      CourseCompletion[]
-}
+  model LearningPath {
+    id                  Int                  @id @default(autoincrement())
+    title               String
+    description         String
+    learningPathCourses LearningPathCourse[] // Relation to Learning Path courses
 
-// CourseCompletion Model
-model CourseCompletion {
-  id                    Int          @id @default(autoincrement())
-  enrollment            Enrollment    @relation(fields: [enrollmentId], references: [id])
-  enrollmentId          Int
-  score                 Float
-  certificateLink       String?
-}
+    Enrollment Enrollment[]
+  }
 
-// LearningPath Model
-model LearningPath {
-  id                    Int          @id @default(autoincrement())
-  title                 String
-  description           String
-  learningPathCourses   LearningPathCourse[]
-}
+  model LearningPathCourse {
+    id             Int          @id @default(autoincrement())
+    learningPathId Int
+    courseId       Int
+    sequence       Int
+    course         Course       @relation(fields: [courseId], references: [id])
+    learningPath   LearningPath @relation(fields: [learningPathId], references: [id])
+  }
 
-// LearningPathCourse Model
-model LearningPathCourse {
-  id                    Int          @id @default(autoincrement())
-  learningPath         LearningPath  @relation(fields: [learningPathId], references: [id])
-  learningPathId       Int
-  course               Course        @relation(fields: [courseId], references: [id])
-  courseId            Int
-  sequence             Int
-}
+  model PerformanceMetric {
+    id               Int    @id @default(autoincrement())
+    courseId         Int
+    completionTime   String
+    performanceScore Float
+    userId           String // Refers to employeeId in User model
+    course           Course @relation(fields: [courseId], references: [id])
+    user             User   @relation(fields: [userId], references: [employeeId])
+  }
 
-// PerformanceMetric Model
-model PerformanceMetric {
-  id                    Int          @id @default(autoincrement())
-  user                  User         @relation(fields: [userId], references: [id])
-  userId                Int
-  course                Course       @relation(fields: [courseId], references: [id])
-  courseId              Int
-  completionTime        String       // e.g., "5 hours"
-  performanceScore      Float
-}
+  model Feedback {
+    id       Int     @id @default(autoincrement())
+    courseId Int
+    rating   Int
+    comments String?
+    userId   String // Refers to employeeId in User model
+    course   Course  @relation(fields: [courseId], references: [id])
+    user     User    @relation(fields: [userId], references: [employeeId])
+  }
 
-// Feedback Model
-model Feedback {
-  id                    Int          @id @default(autoincrement())
-  user                  User         @relation(fields: [userId], references: [id])
-  userId                Int
-  course                Course       @relation(fields: [courseId], references: [id])
-  courseId              Int
-  rating                Int          // Scale of 1 to 5
-  comments              String?
-}
-
-// CourseRequest Model
-model CourseRequest {
-  id                    Int          @id @default(autoincrement())
-  user                  User         @relation(fields: [userId], references: [id])
-  userId                Int
-  course                Course       @relation(fields: [courseId], references: [id])
-  courseId              Int
-  requestDate           DateTime     @default(now())
-  status                String       // e.g., Pending, Approved, Rejected
-}
+  model CourseRequest {
+    id          Int      @id @default(autoincrement())
+    courseId    Int
+    requestDate DateTime @default(now())
+    status      String
+    userId      String // Refers to employeeId in User model
+    course      Course   @relation(fields: [courseId], references: [id])
+    user        User     @relation(fields: [userId], references: [employeeId])
+  }

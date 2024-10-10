@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: url('https://example.com/background-image.jpg') no-repeat center center fixed; /* Replace with your image URL */
+    background-size: cover; /* Ensure the background covers the entire page */
+}
+
+.signup-container {
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.signup-container:hover {
+    transform: scale(1.02);
+}
+
+.signup-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: #007bff; /* A vibrant color for the title */
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #495057;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: #f8f9fa; /* Light input background */
+}
+
+.form-input:focus {
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.signup-button {
+    padding: 12px;
+    background-color: #28a745; /* Green for positive action */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.signup-button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
