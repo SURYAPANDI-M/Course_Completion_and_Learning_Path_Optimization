@@ -28,7 +28,7 @@
     name  String @unique
   }
 
-  model Designation {
+  model Designation { 
     id    Int    @id @default(autoincrement())
     title String @unique
   }

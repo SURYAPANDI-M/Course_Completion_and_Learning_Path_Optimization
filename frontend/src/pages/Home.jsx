@@ -22,8 +22,7 @@ const Home = () => {
       try {
         // Fetch total user count
         const usersResponse = await axios.get('http://localhost:3000/api/reports/users/count');
-        setTotalUsers(usersResponse.data.count);
-
+        setTotalUsers(usersResponse.data.totalUsers);
         // Fetch total employee count
         const employeesResponse = await axios.get('http://localhost:3000/api/reports/employees/count');
         setTotalEmployees(employeesResponse.data.count);
@@ -39,6 +38,7 @@ const Home = () => {
         // Fetch course completion rate
         const completionResponse = await axios.get('http://localhost:3000/api/reports/completion-rate');
         setCompletionRate(completionResponse.data.completionRate);
+        console.log(completionResponse.data)
 
         // Fetch historical completion rates
         const historyResponse = await axios.get('http://localhost:3000/api/reports/reports/completion-history');

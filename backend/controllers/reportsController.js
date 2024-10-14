@@ -51,7 +51,7 @@ exports.getCourseCompletionRate = async (req, res) => {
   try {
     const totalCourses = await prisma.course.count();
     const completedCourses = await prisma.enrollment.count({
-      where: { completionStatus: 'COMPLETED' }, // Assuming courses have a status field
+      where: { completionStatus: 'Completed' }, // Assuming courses have a status field
     });
     const completionRate = (completedCourses / totalCourses) * 100;
     res.json({ completionRate: completionRate.toFixed(2) });

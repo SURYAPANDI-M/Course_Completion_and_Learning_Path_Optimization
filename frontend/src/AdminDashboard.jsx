@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Start with sidebar open
+  const navigate = useNavigate()
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const logout = () => {
+    setTimeout(() => {
+      localStorage.clear()
+      navigate('/')
+    }, 1000);
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -24,6 +32,9 @@ const AdminDashboard = () => {
           <li><Link to="/admin/add-learning-path" className="hover:underline">Add Learning Path</Link></li>
           <li><Link to="/admin/report" className="hover:underline">Report</Link></li>
         </ul>
+        <div className=''>
+          <button className='' onClick={logout} style={{border:'2px solid white'}}>Logout</button>
+        </div>
       </aside>
 
       {/* Main Content */}

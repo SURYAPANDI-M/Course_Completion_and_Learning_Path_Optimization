@@ -14,22 +14,11 @@ const getLearningPaths = async (req, res) => {
 
 // Get final reports based on learning path ID
 const getFinalReports = async (req, res) => {
-  const { learningPathId } = req.query;
-
+  const { learningPathId } = req.query ? req.query : undefined;
+  
   try {
-    const reportData = await prisma.report.findUnique({
-      where: {
-        learningPathId: learningPathId ? Number(learningPathId) : undefined,
-      },
-      select: {
-        totalLearningPaths: true,
-        totalCompletedCourses: true,
-        learnersInProgress: true,
-        totalUsers: true,
-        completedCoursesCount: true,
-        learnersInProgressCount: true,
-        usersCount: true,
-      },
+    const reportData = await prisma.enrollment.findMany({
+      where: learningPathId ? { learningPathId: Number(learningPathId) } : {},
     });
 
     if (!reportData) {
@@ -39,7 +28,7 @@ const getFinalReports = async (req, res) => {
     res.json(reportData);
   } catch (error) {
     console.error('Error fetching report data:', error);
-    res.status(500).json({ message: 'Error fetching report data' });
+    res.status(500).json({ message: 'Error fetching report data nm' });
   }
 };
 
