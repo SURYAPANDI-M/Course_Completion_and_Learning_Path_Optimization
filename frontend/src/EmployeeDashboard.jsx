@@ -18,11 +18,7 @@ const EmployeeDashboard = () => {
         <h2 className="text-2xl font-bold mb-4">Employee Menu</h2>
         <ul className="space-y-2">
           <li><Link to="/employee/enrollments" className="hover:underline">Enrollments</Link></li>
-          <li><Link to="/admin/users" className="hover:underline">User</Link></li>
-          <li><Link to="/admin/courses" className="hover:underline">Course</Link></li>
-          <li><Link to="/admin/assign-course" className="hover:underline">Assign Course</Link></li>
-          <li><Link to="/admin/add-learning-path" className="hover:underline">Add Learning Path</Link></li>
-          <li><Link to="/admin/report" className="hover:underline">Report</Link></li>
+    
         </ul>
       </aside>
 
