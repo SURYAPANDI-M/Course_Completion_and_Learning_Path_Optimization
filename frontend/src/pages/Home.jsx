@@ -74,7 +74,7 @@ const Home = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen p-6">
+    <div className="bg-gradient-to-r from-blue-200 to-purple-300 min-h-screen p-6"> {/* Updated to match the gradient background */}
       <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Admin Dashboard</h1>
       {error && <div className="text-red-500 text-center">{error}</div>}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">

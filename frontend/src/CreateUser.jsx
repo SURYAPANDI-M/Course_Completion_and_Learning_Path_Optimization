@@ -1,3 +1,95 @@
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { FaEdit, FaTrash } from 'react-icons/fa';
+// import { toast } from 'react-toastify';
+
+// const CreateUser = () => {
+//     const [users, setUsers] = useState([]);
+//     const [currentUsers, setCurrentUsers] = useState([]);
+//     const [loading, setLoading] = useState(false);
+
+//     useEffect(() => {
+//         fetchUsers();
+//     }, []);
+
+//     const fetchUsers = async () => {
+//         setLoading(true);
+//         try {
+//             const response = await axios.get('http://localhost:3000/api/getalluser');
+//             console.log('Users:', response.data); // Log the users
+//             setUsers(response.data);
+//             setCurrentUsers(response.data);
+//         } catch (error) {
+//             console.error('Error fetching users:', error);
+//             toast.error('Error fetching users.');
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const handleEdit = (user) => {
+//         // Logic for editing a user
+//         console.log('Edit user:', user);
+//     };
+
+//     const handleDelete = async (employeeId) => {
+//         try {
+//             await axios.delete(`http://localhost:3000/api/deleteuser/${employeeId}`);
+//             toast.success('User deleted successfully');
+//             fetchUsers(); // Refresh the user list
+//         } catch (error) {
+//             console.error('Error deleting user:', error);
+//             toast.error('Error deleting user.');
+//         }
+//     };
+
+//     if (loading) return <div>Loading...</div>;
+
+//     return (
+//         <div className="overflow-hidden shadow sm:rounded-lg">
+//             <table className="min-w-full divide-y divide-gray-200">
+//                 <thead className="bg-gray-50">
+//                     <tr>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee ID</th>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Designation</th>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+//                         <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+//                     </tr>
+//                 </thead>
+//                 <tbody className="divide-y divide-gray-200">
+//                     {currentUsers.map(user => (
+//                         <tr key={user.id}>
+//                             <td className="px-4 py-2">{user.employeeId}</td>
+//                             <td className="px-4 py-2">{user.name}</td>
+//                             <td className="px-4 py-2">{user.email}</td>
+//                             <td className="px-4 py-2">{user.designation ? user.designation.title : 'N/A'}</td>
+//                             <td className="px-4 py-2">{user.department ? user.department.name : 'N/A'}</td>
+//                             <td className="px-4 py-2 flex space-x-2">
+//                                 <button onClick={() => handleEdit(user)} className="text-yellow-500 hover:text-yellow-600">
+//                                     <FaEdit />
+//                                 </button>
+//                                 <button onClick={async () => {
+//                                     const confirmDelete = window.confirm(`Are you sure you want to delete ${user.name}?`);
+//                                     if (confirmDelete) {
+//                                         await handleDelete(user.employeeId);
+//                                     }
+//                                 }} className="text-red-500 hover:text-red-600">
+//                                     <FaTrash />
+//                                 </button>
+//                             </td>
+//                         </tr>
+//                     ))}
+//                 </tbody>
+//             </table>
+//         </div>
+//     );
+// };
+
+// export default CreateUser;
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -253,6 +345,7 @@ const CreateUser = ({ adminDomain }) => {
                     {currentUsers.map((user) => (
                         <tr key={user.id} className="border-b">
                             <td className="p-4">{user.name}</td>
+                            <td className="p-4">{user.email}</td>
                             <td className="p-4">{user.email}</td>
                             <td className="p-4 flex space-x-2">
                                 <button onClick={() => handleEdit(user)} className="text-blue-500 hover:text-blue-700">

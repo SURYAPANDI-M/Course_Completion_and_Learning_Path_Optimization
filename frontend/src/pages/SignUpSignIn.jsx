@@ -1,226 +1,14 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom'; // Import useNavigate
-// import axios from 'axios';
-// import './SignUpSignIn.css';
-
-// const SignUpSignIn = () => {
-//   const navigate = useNavigate(); // Initialize useNavigate
-//   const [domain, setDomain] = useState('');
-//   const [isDomainAvailable, setIsDomainAvailable] = useState(null);
-//   const [formType, setFormType] = useState('');
-
-//   // State for superadmin sign-up
-//   const [superadminData, setSuperadminData] = useState({
-//     employeeId: '',
-//     name: '',
-//     email: '',
-//     password: '',
-//     department: '',
-//     designation: '',
-//   });
-
-//   // State for employee sign-in
-//   const [employeeData, setEmployeeData] = useState({
-//     email: '',
-//     password: '',
-//   });
-
-//   const checkDomain = async () => {
-//     try {
-//       const response = await axios.post('http://localhost:3000/api/auth/check-domain', { domain });
-//       if (response.data.available) {
-//         setIsDomainAvailable(true);
-//         setFormType('admin');
-//       } else {
-//         setIsDomainAvailable(false);
-//         setFormType('employee');
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       alert('Error checking domain');
-//     }
-//   };
-
-//   const handleDomainChange = (e) => {
-//     setDomain(e.target.value);
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     checkDomain();
-//   };
-
-//   const handleSuperadminChange = (e) => {
-//     setSuperadminData({ ...superadminData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleEmployeeChange = (e) => {
-//     setEmployeeData({ ...employeeData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSuperadminSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.post('http://localhost:3000/api/auth/create-organization-domain', {
-//         ...superadminData,
-//         domain,
-//       });
-//       setIsDomainAvailable(false);
-//       alert(response.data.message);
-//     } catch (error) {
-//       console.error(error);
-//       alert('Error creating superadmin');
-//     }
-//   };
-
-//   const handleEmployeeSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.post('/api/login', employeeData);
-//       alert(response.data.message);
-//     } catch (error) {
-//       console.error(error);
-//       alert('Error signing in employee');
-//     }
-//   };
-
-//   // Handle navigation
-//   const handleSignInClick = () => {
-//     navigate('/signin'); // Navigate to the sign-in page
-//   };
-
-//   const handleSignUpClick = () => {
-//     navigate('/signup'); // Navigate to the sign-up page
-//   };
-
-//   return (
-//     <div className="signup-signin-container">
-//       <div className="button-container">
-//         <button className="toggle-button" onClick={handleSignUpClick}>Sign Up</button>
-//         <button className="toggle-button" onClick={handleSignInClick}>Sign In</button>
-//       </div>
-
-//       <form className="domain-check-form" onSubmit={handleSubmit}>
-//         <input
-//           className="input-field"
-//           type="text"
-//           placeholder="Enter organization domain"
-//           value={domain}
-//           onChange={handleDomainChange}
-//         />
-//         <button className="submit-button" type="submit">Check Domain</button>
-//       </form>
-
-//       {isDomainAvailable !== null && (
-//         <div>
-//           {isDomainAvailable ? (
-//             <div className="signup-section">
-//               <h2>SuperAdmin Sign Up</h2>
-//               <form onSubmit={handleSuperadminSubmit}>
-//                 <input
-//                   className="input-field"
-//                   type="text"
-//                   name="employeeId"
-//                   placeholder="Employee ID"
-//                   value={superadminData.employeeId}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="text"
-//                   name="name"
-//                   placeholder="Name"
-//                   value={superadminData.name}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="email"
-//                   name="email"
-//                   placeholder="Email"
-//                   value={superadminData.email}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="password"
-//                   name="password"
-//                   placeholder="Password"
-//                   value={superadminData.password}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="text"
-//                   name="department"
-//                   placeholder="Department"
-//                   value={superadminData.department}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="text"
-//                   name="designation"
-//                   placeholder="Designation"
-//                   value={superadminData.designation}
-//                   onChange={handleSuperadminChange}
-//                   required
-//                 />
-//                 <button className="submit-button" type="submit">Create SuperAdmin</button>
-//               </form>
-//             </div>
-//           ) : (
-//             <div className="signin-section">
-//               <h2>Employee Sign In</h2>
-//               <form onSubmit={handleEmployeeSubmit}>
-//                 <input
-//                   className="input-field"
-//                   type="email"
-//                   name="email"
-//                   placeholder="Email"
-//                   value={employeeData.email}
-//                   onChange={handleEmployeeChange}
-//                   required
-//                 />
-//                 <input
-//                   className="input-field"
-//                   type="password"
-//                   name="password"
-//                   placeholder="Password"
-//                   value={employeeData.password}
-//                   onChange={handleEmployeeChange}
-//                   required
-//                 />
-//                 <button className="submit-button" type="submit">Sign In</button>
-//               </form>
-//             </div>
-//           )}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default SignUpSignIn;
-
-
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './SignUpSignIn.css';
+import { FaUserPlus, FaSignInAlt } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUpSignIn = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [domain, setDomain] = useState('');
   const [isDomainAvailable, setIsDomainAvailable] = useState(null);
-  const [formType, setFormType] = useState('');
-
-  // State for superadmin sign-up
   const [superadminData, setSuperadminData] = useState({
     employeeId: '',
     name: '',
@@ -229,26 +17,41 @@ const SignUpSignIn = () => {
     department: '',
     designation: '',
   });
-
-  // State for employee sign-in
-  const [employeeData, setEmployeeData] = useState({
-    email: '',
-    password: '',
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const checkDomain = async () => {
+    if (!domain.trim()) {
+      toast.error('Domain field cannot be empty', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+      return;
+    }
+
     try {
       const response = await axios.post('http://localhost:3000/api/auth/check-domain', { domain });
       if (response.data.available) {
         setIsDomainAvailable(true);
-        setFormType('admin');
+        setIsModalOpen(true);
       } else {
         setIsDomainAvailable(false);
-        setFormType('employee');
+        toast.success('WELCOME BACK ADMIN', {
+          position: 'top-center',
+          autoClose: 500,
+          hideProgressBar: true,
+        });
+        setTimeout(() => {
+          navigate('/signin');
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
-      alert('Error checking domain');
+      toast.error('Error checking domain', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
     }
   };
 
@@ -265,129 +68,100 @@ const SignUpSignIn = () => {
     setSuperadminData({ ...superadminData, [e.target.name]: e.target.value });
   };
 
-  const handleEmployeeChange = (e) => {
-    setEmployeeData({ ...employeeData, [e.target.name]: e.target.value });
-  };
-
   const handleSuperadminSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/create-organization-domain', {
+      const response = await axios.post('http://localhost:3000/api/auth/create-superadmin', {
         ...superadminData,
         domain,
       });
-      setIsDomainAvailable(false);
-      alert(response.data.message);
+      toast.success('SuperAdmin created successfully!');
+      setIsModalOpen(false);
+      navigate('/dashboard');
     } catch (error) {
       console.error(error);
-      alert('Error creating superadmin');
+      toast.error('Error creating SuperAdmin', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
     }
   };
 
-  const handleEmployeeSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/login', employeeData);
-      alert(response.data.message);
-    } catch (error) {
-      console.error(error);
-      alert('Error signing in employee');
-    }
-  };
-
-  // Handle navigation
-  const handleSignInClick = () => {
-    navigate('/signin'); // Navigate to the sign-in page
-  };
-
-  const handleSignUpClick = () => {
-    navigate('/signup'); // Navigate to the sign-up page
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
-    <div className="signup-signin-container">
-      <div className="button-container">
-        <button className="toggle-button" onClick={handleSignUpClick}>Sign Up</button>
-        <button className="toggle-button" onClick={handleSignInClick}>Sign In</button>
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-blue-200 to-purple-300">
+      <ToastContainer />
+      <h1 className="text-4xl font-bold text-white mb-8">MSP</h1>
+
+      <div className="mb-6 flex space-x-4">
+        <button
+          className="flex items-center justify-center bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300"
+          onClick={() => navigate('/signup')}
+        >
+          <FaUserPlus className="mr-2" /> Sign Up
+        </button>
+        <button
+          className="flex items-center justify-center bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300"
+          onClick={() => navigate('/signin')}
+        >
+          <FaSignInAlt className="mr-2" /> Sign In
+        </button>
       </div>
 
-      <form className="domain-check-form" onSubmit={handleSubmit}>
+      <form className="mb-6 flex flex-col items-center" onSubmit={handleSubmit}>
         <input
-          className="input-field"
+          className="py-2 px-4 mb-4 border border-gray-300 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
           type="text"
           placeholder="Enter organization domain"
           value={domain}
           onChange={handleDomainChange}
         />
-        <button className="submit-button" type="submit">Check Domain</button>
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300"
+          type="submit"
+        >
+          Check Domain
+        </button>
       </form>
 
-      {isDomainAvailable !== null && (
-        <div>
-          {isDomainAvailable ? (
-            <div className="signup-section">
-              <h2>SuperAdmin Sign Up</h2>
-              <form onSubmit={handleSuperadminSubmit}>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4 text-center">SuperAdmin Sign Up</h2>
+            <form onSubmit={handleSuperadminSubmit} className="flex flex-col space-y-4">
+              {['employeeId', 'name', 'email', 'password', 'department', 'designation'].map((field) => (
                 <input
-                  className="input-field"
-                  type="text"
-                  name="employeeId"
-                  placeholder="Employee ID"
-                  value={superadminData.employeeId}
+                  key={field}
+                  className="py-2 px-4 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  type={field === 'password' ? 'password' : 'text'}
+                  name={field}
+                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                  value={superadminData[field]}
                   onChange={handleSuperadminChange}
                   required
                 />
-                <input
-                  className="input-field"
-                  type="text"
-                  name="name"
-                  placeholder="Name"
-                  value={superadminData.name}
-                  onChange={handleSuperadminChange}
-                  required
-                />
-                <input
-                  className="input-field"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={superadminData.email}
-                  onChange={handleSuperadminChange}
-                  required
-                />
-                <input
-                  className="input-field"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={superadminData.password}
-                  onChange={handleSuperadminChange}
-                  required
-                />
-                <input
-                  className="input-field"
-                  type="text"
-                  name="department"
-                  placeholder="Department"
-                  value={superadminData.department}
-                  onChange={handleSuperadminChange}
-                  required
-                />
-                <input
-                  className="input-field"
-                  type="text"
-                  name="designation"
-                  placeholder="Designation"
-                  value={superadminData.designation}
-                  onChange={handleSuperadminChange}
-                  required
-                />
-                <button className="submit-button" type="submit">Create SuperAdmin</button>
-              </form>
-            </div>
-          ) : (
-            <div></div>
-          )}
+              ))}
+              <div className="flex justify-between">
+                <button
+                  className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300"
+                  type="submit"
+                >
+                  Create SuperAdmin
+                </button>
+                <button
+                  type="button"
+                  className="bg-gray-300 text-black py-2 px-4 rounded-lg shadow-lg hover:bg-gray-400 transition duration-300"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

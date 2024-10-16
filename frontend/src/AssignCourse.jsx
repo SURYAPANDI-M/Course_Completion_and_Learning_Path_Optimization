@@ -105,7 +105,7 @@ const AssignCourse = () => {
                 <FaFolderPlus className="mr-2" />
                 Assign Course to User
             </h2>
-            <form onSubmit={handleEnroll} className="bg-white p-6 rounded-lg shadow-md">
+            <form onSubmit={handleEnroll} className="bg-transparent p-6 rounded-lg shadow-md">
                 <div className="mb-4">
                     <label className="block text-gray-700 mb-1" htmlFor="departments">Select Department:</label>
                     <select
