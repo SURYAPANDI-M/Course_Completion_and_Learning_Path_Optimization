@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaUser, FaBook, FaFolderPlus } from 'react-icons/fa';
 
 const AssignCourse = () => {
     const [departments, setDepartments] = useState([]);
@@ -100,15 +101,18 @@ const AssignCourse = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl mb-4">Assign Course to User</h2>
-            <form onSubmit={handleEnroll} className="bg-white p-4 rounded shadow-md">
+            <h2 className="text-2xl font-bold mb-4 flex items-center">
+                <FaFolderPlus className="mr-2" />
+                Assign Course to User
+            </h2>
+            <form onSubmit={handleEnroll} className="bg-white p-6 rounded-lg shadow-md">
                 <div className="mb-4">
                     <label className="block text-gray-700 mb-1" htmlFor="departments">Select Department:</label>
                     <select
                         id="departments"
                         value={selectedDepartment}
                         onChange={handleDepartmentChange}
-                        className="border border-gray-300 rounded-md py-2 px-3 w-full"
+                        className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select a department</option>
                         {departments.map(dept => (
@@ -125,7 +129,7 @@ const AssignCourse = () => {
                         value={selectedUserId}
                         onChange={(e) => setSelectedUserId(e.target.value)}
                         required
-                        className="border border-gray-300 rounded-md py-2 px-3 w-full"
+                        className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select a user</option>
                         {filteredUsers.map(user => (
@@ -142,7 +146,7 @@ const AssignCourse = () => {
                         value={learningPathId}
                         onChange={handleLearningPathChange}
                         required
-                        className="border border-gray-300 rounded-md py-2 px-3 w-full"
+                        className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select a learning path</option>
                         {learningPaths.map(lp => (
@@ -159,7 +163,7 @@ const AssignCourse = () => {
                         value={selectedCourseId}
                         onChange={(e) => setSelectedCourseId(e.target.value)}
                         required
-                        className="border border-gray-300 rounded-md py-2 px-3 w-full"
+                        className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select a course</option>
                         {courses.map(course => (
@@ -171,9 +175,9 @@ const AssignCourse = () => {
                 </div>
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+                    className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center"
                 >
-                    Enroll User
+                    <FaBook className="mr-2" /> Enroll User
                 </button>
             </form>
 

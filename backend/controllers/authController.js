@@ -117,7 +117,7 @@ exports.login = async (req, res) => {
     const roleData = await prisma.role.findUnique({ where: { id: user.roleId } });
 
     // Generate JWT token
-    const token = jwt.sign({ userId: user.employeeId, role: roleData.name }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.employeeId, role: roleData.name },'helloworld', { expiresIn: '1h' });
 
     return res.status(200).json({ message: 'Logged in successfully', token, role:roleData.name,domain:user.organizationDomain, userId:user.employeeId });
   } catch (error) {

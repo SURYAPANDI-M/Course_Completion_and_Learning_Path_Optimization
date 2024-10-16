@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaUserPlus, FaEdit, FaEye, FaTrash } from 'react-icons/fa';
 
 const CreateUser = ({ adminDomain }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -128,7 +129,7 @@ const CreateUser = ({ adminDomain }) => {
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
     return (
-        <div className="flex flex-col items-center justify-start h-screen bg-gray-100 relative p-4">
+        <div className="flex flex-col items-center justify-start h-screen bg-gray-100 p-4 relative">
             <div className="flex justify-between w-full max-w-2xl mb-4">
                 <div className="bg-white shadow-md rounded-lg p-4">
                     <h2 className="text-lg font-semibold">Total Users</h2>
@@ -140,9 +141,9 @@ const CreateUser = ({ adminDomain }) => {
                     resetForm();
                     setIsOpen(true);
                 }}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
             >
-                Add User
+                <FaUserPlus className="mr-2" /> Add User
             </button>
 
             {isOpen && (
@@ -150,54 +151,22 @@ const CreateUser = ({ adminDomain }) => {
                     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-sm">
                         <h2 className="text-xl font-semibold text-center text-gray-800 mb-4">{editingUser ? 'Edit User' : 'Create User'}</h2>
                         <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Name:</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    value={user.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-1" htmlFor="employeeId">Employee ID:</label>
-                                <input
-                                    type="text"
-                                    name="employeeId"
-                                    id="employeeId"
-                                    value={user.employeeId}
-                                    onChange={handleChange}
-                                    required
-                                    className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-1" htmlFor="password">Password:</label>
-                                <input
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    value={user.password}
-                                    onChange={handleChange}
-                                    required={!editingUser} // Password is required only when creating
-                                    className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 font-medium mb-1" htmlFor="email">Email:</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    value={user.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                            </div>
+                            {['name', 'employeeId', 'password', 'email'].map((field) => (
+                                <div className="mb-4" key={field}>
+                                    <label className="block text-gray-700 font-medium mb-1" htmlFor={field}>
+                                        {field.charAt(0).toUpperCase() + field.slice(1).replace('Id', ' ID')}:
+                                    </label>
+                                    <input
+                                        type={field === 'password' ? 'password' : 'text'}
+                                        name={field}
+                                        id={field}
+                                        value={user[field]}
+                                        onChange={handleChange}
+                                        required={field === 'password' ? !editingUser : true} // Password is required only when creating
+                                        className="border border-gray-300 rounded-md py-2 px-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                            ))}
                             <div className="mb-4">
                                 <label className="block text-gray-700 font-medium mb-1" htmlFor="designationId">Select Designation:</label>
                                 <select
@@ -272,60 +241,48 @@ const CreateUser = ({ adminDomain }) => {
                 </div>
             )}
 
-            <div className="mt-6 w-full max-w-2xl bg-white shadow-md rounded-lg overflow-hidden">
-                <table className="min-w-full border border-gray-300">
-                    <thead className="bg-blue-500 text-white">
-                        <tr>
-                            <th className="px-4 py-2 text-left border-b border-gray-300">ID</th>
-                            <th className="px-4 py-2 text-left border-b border-gray-300">Name</th>
-                            <th className="px-4 py-2 text-left border-b border-gray-300">Email</th>
-                            <th className="px-4 py-2 text-left border-b border-gray-300">Actions</th>
+            <table className="mt-4 w-full max-w-2xl bg-white shadow-md rounded-lg overflow-hidden">
+                <thead className="bg-blue-500 text-white">
+                    <tr>
+                        <th className="p-4">Name</th>
+                        <th className="p-4">Email</th>
+                        <th className="p-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentUsers.map((user) => (
+                        <tr key={user.id} className="border-b">
+                            <td className="p-4">{user.name}</td>
+                            <td className="p-4">{user.email}</td>
+                            <td className="p-4 flex space-x-2">
+                                <button onClick={() => handleEdit(user)} className="text-blue-500 hover:text-blue-700">
+                                    <FaEdit />
+                                </button>
+                                <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-700">
+                                    <FaTrash />
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {currentUsers.map((user, index) => (
-                            <tr key={user.employeeId} className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
-                                <td className="border px-4 py-2">{user.employeeId}</td>
-                                <td className="border px-4 py-2">{user.name}</td>
-                                <td className="border px-4 py-2">{user.email}</td>
-                                <td className="border px-4 py-2">
-                                    <button
-                                        onClick={() => handleEdit(user)}
-                                        className="text-blue-500 hover:underline"
-                                    >
-                                        Edit
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                        {currentUsers.length === 0 && (
-                            <tr>
-                                <td colSpan="4" className="text-center py-4">No users found.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-
-            <div className="flex justify-between mt-4 w-full max-w-2xl">
+                    ))}
+                </tbody>
+            </table>
+            <div className="flex justify-between items-center mt-4">
                 <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="bg-gray-300 text-black py-1 px-3 rounded-md disabled:opacity-50"
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                    className={`px-4 py-2 ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-500 text-white'} rounded-md`}
                 >
                     Previous
                 </button>
-                <span className="self-center">{`Page ${currentPage} of ${Math.ceil(users.length / usersPerPage)}`}</span>
                 <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(users.length / usersPerPage)))}
-                    disabled={currentPage === Math.ceil(users.length / usersPerPage)}
-                    className="bg-gray-300 text-black py-1 px-3 rounded-md disabled:opacity-50"
+                    disabled={indexOfLastUser >= users.length}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                    className={`px-4 py-2 ${indexOfLastUser >= users.length ? 'bg-gray-300' : 'bg-blue-500 text-white'} rounded-md`}
                 >
                     Next
                 </button>
             </div>
-
-            <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} />
+            <ToastContainer />
         </div>
     );
 };

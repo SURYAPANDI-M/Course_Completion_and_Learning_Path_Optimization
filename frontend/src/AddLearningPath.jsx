@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEdit } from 'react-icons/fa'; // Importing a pencil icon
 
 const AddLearningPath = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +12,9 @@ const AddLearningPath = () => {
     description: ''
   });
   const [learningPaths, setLearningPaths] = useState([]);
-  const [hoveredRow, setHoveredRow] = useState(null); // State to track the hovered row
+  const [hoveredRow, setHoveredRow] = useState(null); 
   const [currentPage, setCurrentPage] = useState(1);
-  const [pathsPerPage] = useState(5); // Number of learning paths per page
+  const [pathsPerPage] = useState(5); 
 
   useEffect(() => {
     fetchLearningPaths();
@@ -78,18 +79,19 @@ const AddLearningPath = () => {
           <h2 className="text-lg font-semibold">Total Learning Paths</h2>
           <p className="text-2xl">{learningPaths.length}</p>
         </div>
+        <button
+          onClick={() => {
+            setLearningPath({ id: null, title: '', description: '' });
+            setIsOpen(true);
+          }}
+          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        >
+          Add Learning Path
+        </button>
       </div>
-      <button
-        onClick={() => {
-          setLearningPath({ id: null, title: '', description: '' });
-          setIsOpen(true);
-        }}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
-      >
-        Add Learning Path
-      </button>
+
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-sm">
             <h2 className="text-xl font-semibold text-center text-gray-800 mb-4">{learningPath.id ? 'Edit Learning Path' : 'Add Learning Path'}</h2>
             <form onSubmit={handleSubmit}>
@@ -152,19 +154,19 @@ const AddLearningPath = () => {
               <tr
                 key={path.id}
                 className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
-                onMouseEnter={() => setHoveredRow(path.id)} // Set hovered row
-                onMouseLeave={() => setHoveredRow(null)}   // Reset hovered row
+                onMouseEnter={() => setHoveredRow(path.id)}
+                onMouseLeave={() => setHoveredRow(null)}
               >
                 <td className="border px-4 py-2">{path.id}</td>
                 <td className="border px-4 py-2">{path.title}</td>
                 <td className="border px-4 py-2">{path.description}</td>
                 <td className="border px-4 py-2">
-                  {hoveredRow === path.id && ( // Show edit button on hover
+                  {hoveredRow === path.id && (
                     <button
                       onClick={() => handleEdit(path)}
                       className="bg-yellow-500 text-white py-1 px-2 rounded-md hover:bg-yellow-600 transition duration-300"
                     >
-                      Edit
+                      <FaEdit className="inline w-4 h-4" />
                     </button>
                   )}
                 </td>

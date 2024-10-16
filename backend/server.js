@@ -33,9 +33,9 @@ app.use('/api',userCreateRoutes);
 app.use('/api/reports', report);
 app.use('/api/finalreports',finalReport)
 app.use('/api/employee-enrollments',enrolledRoutes)
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// 'http://localhost:3000/api/reports/reports/completion-history
