@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/check-domain', checkDomain);
 
 // Route to create a new organization domain and register SuperAdmin
-router.post('/create-organization-domain', createOrganizationDomain);
+router.post('/create-superadmin', createOrganizationDomain);
 
 // Route to sign up a new employee
 router.post('/signup', signUpEmployee);

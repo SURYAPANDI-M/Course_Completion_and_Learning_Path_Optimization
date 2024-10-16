@@ -27,6 +27,7 @@ const Signin = () => {
                 sessionStorage.setItem('domain', domain);
                 sessionStorage.setItem('role', role);
                 sessionStorage.setItem('userId', userId);
+              
                 navigate(role === "Employee" ? '/employee' : '/admin/home');
             }
         } catch (err) {

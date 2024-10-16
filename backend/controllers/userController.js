@@ -54,7 +54,7 @@ exports.getUserByEmail = async (req, res) => {
 // Update user information by email
 exports.updateUser = async (req, res) => {
     const {email, name, roleId, departmentId, designationId } = req.body; // Update fields
-
+    
     try {
         const updatedUser = await prisma.user.update({
             where: { email },

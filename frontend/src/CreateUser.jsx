@@ -154,8 +154,9 @@ const CreateUser = ({ adminDomain }) => {
     };
 
     const fetchUsers = async () => {
+        const domain = sessionStorage.getItem("domain");
         try {
-            const response = await axios.get('http://localhost:3000/api/getalluser');
+            const response = await axios.get(`http://localhost:3000/api/getalluser/${domain}`);
             setUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);

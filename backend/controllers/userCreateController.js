@@ -6,8 +6,17 @@ const bcrypt = require('bcrypt');
 
 
 const getAllUsers = async (req, res) => {
+    const {organizationDomain} = req.params;
+    console.log(organizationDomain)
     try {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany(
+            {
+                where:{
+                    organizationDomain:organizationDomain
+                }
+            }
+        );
+        console.log(users)
         return res.status(200).json(users);
     } catch (error) {
         console.error("Error fetching users:", error);

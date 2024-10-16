@@ -20,6 +20,7 @@ const SignUpSignIn = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const checkDomain = async () => {
+    console.log("error bro")
     if (!domain.trim()) {
       toast.error('Domain field cannot be empty', {
         position: 'top-center',
@@ -77,7 +78,7 @@ const SignUpSignIn = () => {
       });
       toast.success('SuperAdmin created successfully!');
       setIsModalOpen(false);
-      navigate('/dashboard');
+      navigate('/signin');
     } catch (error) {
       console.error(error);
       toast.error('Error creating SuperAdmin', {

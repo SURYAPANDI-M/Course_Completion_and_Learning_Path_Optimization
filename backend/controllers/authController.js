@@ -36,7 +36,7 @@ exports.createOrganizationDomain = async (req, res) => {
     const roleData = await prisma.role.findUnique({ where: { name: 'Admin' } });
     const designationData = await prisma.designation.findUnique({ where: { title: designation } });
     const departmentData = await prisma.department.findUnique({ where: { name: department } });
-
+    console.log("vijay")
     const superAdmin = await prisma.user.create({
       data: {
         employeeId: employeeId.toUpperCase(),

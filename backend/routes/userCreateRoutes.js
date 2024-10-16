@@ -8,7 +8,7 @@ const router = express.Router();
 // Route to create a new user
 router.post('/users', createUser);
 router.get('/Designations', getDesignations);
-router.get('/getalluser',getAllUsers)
+router.get('/getalluser/:organizationDomain',getAllUsers)
 router.get('/roles',getRole)
 router.put('/users/:id',updateUser );
 module.exports = router;
