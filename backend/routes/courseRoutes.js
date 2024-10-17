@@ -6,7 +6,7 @@ const courseController = require('../controllers/courseController');
 router.post('/', courseController.createCourse);
 
 // Route for getting all courses
-router.get('/', courseController.getCourses);
+router.get('/:domain', courseController.getCourses);
 
 // Route for getting a specific course by ID
 router.get('/:id', courseController.getCourseById);

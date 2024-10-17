@@ -31,8 +31,9 @@ const AssignCourse = () => {
     };
 
     const fetchUsersByDepartment = async (departmentId) => {
+        const domain = sessionStorage.getItem('domain')
         try {
-            const response = await axios.get(`http://localhost:3000/api/assign/departments/${departmentId}/users`);
+            const response = await axios.get(`http://localhost:3000/api/assign/departments/${departmentId}/users/${domain}`);
             setDepartmentUsers({ [departmentId]: response.data });
             setFilteredUsers(response.data);
         } catch (error) {
@@ -42,8 +43,10 @@ const AssignCourse = () => {
     };
 
     const fetchLearningPaths = async () => {
+        const domain = sessionStorage.getItem('domain')
+        
         try {
-            const response = await axios.get('http://localhost:3000/api/assign/learning-paths');
+            const response = await axios.get(`http://localhost:3000/api/learning-paths/${domain}`);
             setLearningPaths(response.data);
         } catch (error) {
             console.error('Error fetching learning paths:', error);

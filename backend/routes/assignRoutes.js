@@ -10,7 +10,7 @@ const {
 
 // Define routes
 router.get('/departments', getDepartments);
-router.get('/departments/:departmentId/users', getUsersByDepartment);
+router.get('/departments/:departmentId/users/:domain', getUsersByDepartment);
 router.get('/learning-paths', getLearningPaths);
 router.get('/learning-paths/:learningPathId/courses', getCoursesByLearningPath);
 router.post('/enroll', enrollUser);

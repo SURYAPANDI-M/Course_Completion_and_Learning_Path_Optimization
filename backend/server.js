@@ -10,6 +10,8 @@ const userCreateRoutes = require('./routes/userCreateRoutes');
 const report = require('./routes/reportRoutes');
 const finalReport = require('./routes/finalReportRoutes')
 const enrolledRoutes = require('./routes/employee/enrolledRoutes')
+const profileRoutes = require('./routes/profileRoutes')
+
 
 
 const { PrismaClient } = require('@prisma/client');
@@ -33,7 +35,8 @@ app.use('/api',userCreateRoutes);
 app.use('/api/reports', report);
 app.use('/api/finalreports',finalReport)
 app.use('/api/employee-enrollments',enrolledRoutes)
-
+app.use('/api',profileRoutes)
+app.use('/api',userRoutes)
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

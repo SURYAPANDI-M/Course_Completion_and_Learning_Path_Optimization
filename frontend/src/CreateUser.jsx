@@ -222,7 +222,7 @@ const CreateUser = ({ adminDomain }) => {
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
     return (
-        <div className="flex flex-col items-center justify-start h-screen bg-gray-100 p-4 relative">
+        <div className="flex flex-col items-center justify-start h-screen bg-transparent p-4 relative">
             <div className="flex justify-between w-full max-w-2xl mb-4">
                 <div className="bg-white shadow-md rounded-lg p-4">
                     <h2 className="text-lg font-semibold">Total Users</h2>
@@ -340,6 +340,7 @@ const CreateUser = ({ adminDomain }) => {
                         <th className="p-4">Name</th>
                         <th className="p-4">Email</th>
                         <th className="p-4">Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -351,9 +352,6 @@ const CreateUser = ({ adminDomain }) => {
                             <td className="p-4 flex space-x-2">
                                 <button onClick={() => handleEdit(user)} className="text-blue-500 hover:text-blue-700">
                                     <FaEdit />
-                                </button>
-                                <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:text-red-700">
-                                    <FaTrash />
                                 </button>
                             </td>
                         </tr>

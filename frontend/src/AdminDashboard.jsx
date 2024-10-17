@@ -1,6 +1,7 @@
-import React, { useState } from 'react'; // Ensure useState is imported
+import React, { useState, useEffect } from 'react'; // Ensure useState is imported
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { FaTachometerAlt, FaUsers, FaBook, FaClipboardList, FaChartPie, FaSignOutAlt } from 'react-icons/fa'; // Importing icons for sidebar
+
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Start with sidebar open
@@ -16,7 +17,11 @@ const AdminDashboard = () => {
       navigate('/');
     }, 1000);
   };
-
+  useEffect(()=>{
+    if(sessionStorage.getItem('role') !== 'Admin') {
+      navigate('/');
+    }
+  },[])
   return (
     <div className="flex h-screen bg-gradient-to-r from-blue-200 to-purple-300"> {/* Changed to match the SignUpSignIn component */}
       {/* Sidebar */}
@@ -24,8 +29,8 @@ const AdminDashboard = () => {
         <button className="absolute top-4 right-4 md:hidden" onClick={toggleSidebar}>
           <span className="text-white text-xl">{isSidebarOpen ? '✖' : '☰'}</span>
         </button>
-        <h2 className="text-2xl font-bold mb-4 text-center">MSP Admin Menu</h2>
-        <ul className="space-y-2">
+        <h2 className="text-2xl font-bold mb-4 text-center ">MSP Admin Menu</h2>
+        <ul className="space-y-2 ">
           <li>
             <Link to="/admin/home" className="flex items-center p-2 hover:bg-blue-600 rounded transition duration-300">
               <FaTachometerAlt className="mr-2" /> Home

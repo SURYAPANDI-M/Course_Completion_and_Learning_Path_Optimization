@@ -283,6 +283,7 @@ const AddCourse = () => {
     duration: 0,
     difficultyLevel: '',
     description: '',
+    domain: sessionStorage.getItem('domain'),
     learningPathId: '',
   });
   const [learningPaths, setLearningPaths] = useState([]);
@@ -297,8 +298,9 @@ const AddCourse = () => {
   }, []);
 
   const fetchLearningPaths = async () => {
+    const domain = sessionStorage.getItem('domain')
     try {
-      const response = await axios.get('http://localhost:3000/api/learning-paths');
+      const response = await axios.get(`http://localhost:3000/api/learning-paths/${domain}`);
       setLearningPaths(response.data);
     } catch (error) {
       console.error('Error fetching learning paths:', error);
@@ -307,8 +309,11 @@ const AddCourse = () => {
   };
 
   const fetchCourses = async () => {
+    const domain = sessionStorage.getItem('domain')
+
     try {
-      const response = await axios.get('http://localhost:3000/api/courses');
+      const response = await axios.get(`http://localhost:3000/api/courses/${domain}`);
+    
       const sortedCourses = response.data.sort((a, b) => a.id - b.id);
       setCourses(sortedCourses);
     } catch (error) {
@@ -342,7 +347,7 @@ const AddCourse = () => {
         toast.success('Course added successfully!');
         setCourses((prev) => [...prev, response.data]);
       }
-      setCourse({ id: null, title: '', duration: 0, difficultyLevel: '', description: '', learningPathId: '' });
+      setCourse({ id: null, title: '', duration: 0, difficultyLevel: '', description: '', learningPathId: '' , domain: sessionStorage.getItem('domain')});
       setIsOpen(false);
     } catch (error) {
       console.error('Error saving course:', error);
@@ -361,7 +366,7 @@ const AddCourse = () => {
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen bg-gray-100 relative p-4">
+    <div className="flex flex-col items-center justify-start h-screen bg-transparent relative p-4">
       <div className="flex justify-between w-full max-w-2xl mb-4">
         <div className="bg-white shadow-md rounded-lg p-4 border border-gray-200">
           <h2 className="text-lg font-semibold text-gray-600">Total Courses</h2>
@@ -369,7 +374,7 @@ const AddCourse = () => {
         </div>
         <button
           onClick={() => {
-            setCourse({ id: null, title: '', duration: 0, difficultyLevel: '', description: '', learningPathId: '' });
+            setCourse({ id: null, title: '', duration: 0, difficultyLevel: '', description: '', learningPathId: '', domain: sessionStorage.getItem('domain') });
             setIsOpen(true);
           }}
           className="bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 shadow-md transition duration-300"

@@ -2,27 +2,31 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaEdit } from 'react-icons/fa'; // Importing a pencil icon
+import { FaEdit } from 'react-icons/fa';
 
 const AddLearningPath = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [learningPath, setLearningPath] = useState({
     id: null,
     title: '',
-    description: ''
+    description: '',
+    domain: sessionStorage.getItem('domain') || '',
   });
   const [learningPaths, setLearningPaths] = useState([]);
-  const [hoveredRow, setHoveredRow] = useState(null); 
+  const [hoveredRow, setHoveredRow] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pathsPerPage] = useState(5); 
+  const [pathsPerPage] = useState(5);
 
   useEffect(() => {
     fetchLearningPaths();
   }, []);
 
   const fetchLearningPaths = async () => {
+    const domain = sessionStorage.getItem('domain')
+  console.log(domain)
     try {
-      const response = await axios.get('http://localhost:3000/api/learning-paths');
+      const response = await axios.get(`http://localhost:3000/api/learning-paths/${domain}`);
+      console.log(response)
       const sortedPaths = response.data.sort((a, b) => a.id - b.id);
       setLearningPaths(sortedPaths);
     } catch (error) {
@@ -41,24 +45,35 @@ const AddLearningPath = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Submitting form:', learningPath); // Debugging log
+
     try {
       if (learningPath.id) {
-        await axios.put(`http://localhost:3000/api/learning-paths/${learningPath.id}`, learningPath);
-        toast.success('Learning Path updated successfully!');
-        setLearningPaths((prev) => 
-          prev.map(path => (path.id === learningPath.id ? learningPath : path))
-        );
+        const response = await axios.put(`http://localhost:3000/api/learning-paths/${learningPath.id}`, learningPath);
+
+        if (response.status === 200 || response.status === 201) {
+          toast.success(response.data.message || 'Learning Path updated successfully!');
+          setLearningPaths((prev) => prev.map(path => (path.id === learningPath.id ? learningPath : path)));
+        } else {
+          toast.error(response.data.message || 'Error updating Learning Path. Please try again.');
+        }
       } else {
         const response = await axios.post('http://localhost:3000/api/learning-paths', learningPath);
-        toast.success('Learning Path added successfully!');
-        setLearningPaths((prev) => [...prev, response.data]); 
+
+        if (response.status === 200 || response.status === 201) {
+          toast.success(response.data.message || 'Learning Path added successfully!');
+          setLearningPaths((prev) => [...prev, response.data]);
+        } else {
+          toast.error(response.data.message || 'Error adding Learning Path. Please try again.');
+        }
       }
 
-      setLearningPath({ id: null, title: '', description: '' });
+      // Reset form after successful submission
+      setLearningPath({ id: null, title: '', description: '', domain: sessionStorage.getItem('domain') || '' });
       setIsOpen(false);
     } catch (error) {
       console.error('Error submitting learning path:', error);
-      toast.error('Error saving Learning Path. Please try again.');
+      toast.error(error.response?.data?.message || 'Error saving Learning Path. Please try again.');
     }
   };
 
@@ -67,13 +82,12 @@ const AddLearningPath = () => {
     setIsOpen(true);
   };
 
-  // Pagination logic
   const indexOfLastPath = currentPage * pathsPerPage;
   const indexOfFirstPath = indexOfLastPath - pathsPerPage;
   const currentPaths = learningPaths.slice(indexOfFirstPath, indexOfLastPath);
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen bg-gray-100 relative p-4">
+    <div className="flex flex-col items-center justify-start h-screen bg-transparent relative p-4">
       <div className="flex justify-between w-full max-w-2xl mb-4">
         <div className="bg-white shadow-md rounded-lg p-4">
           <h2 className="text-lg font-semibold">Total Learning Paths</h2>
@@ -81,7 +95,7 @@ const AddLearningPath = () => {
         </div>
         <button
           onClick={() => {
-            setLearningPath({ id: null, title: '', description: '' });
+            setLearningPath({ id: null, title: '', description: '', domain: sessionStorage.getItem('domain') || '' });
             setIsOpen(true);
           }}
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
@@ -181,7 +195,6 @@ const AddLearningPath = () => {
         </table>
       </div>
 
-      {/* Pagination Controls */}
       <div className="flex justify-between mt-4 w-full max-w-2xl">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -200,7 +213,7 @@ const AddLearningPath = () => {
         </button>
       </div>
 
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+      <ToastContainer />
     </div>
   );
 };

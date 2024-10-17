@@ -3,8 +3,16 @@ const prisma = new PrismaClient(); // Create a new Prisma client instance
 
 // Get total user count
 exports.getTotalUserCount = async (req, res) => {
+  const {domain} = req.params;
+
   try {
-    const count = await prisma.user.count(); // Adjust the query as necessary
+    const count = await prisma.user.count(
+      {
+        where:{
+          organizationDomain:domain
+        }
+      }
+    ); // Adjust the query as necessary
     res.json({ totalUsers: count });
   } catch (error) {
     console.error(error);
@@ -14,9 +22,12 @@ exports.getTotalUserCount = async (req, res) => {
 
 // Get total employee count
 exports.getTotalEmployeeCount = async (req, res) => {
+  const {domain} = req.params;
   try {
     const employeeCount = await prisma.user.count({
-      where: { roleId: 2 }, // Assuming 'roleId' field identifies employee
+      where: { roleId: 2 ,
+        organizationDomain:domain
+      }, // Assuming 'roleId' field identifies employee
     });
     res.json({ count: employeeCount });
   } catch (err) {
@@ -26,10 +37,16 @@ exports.getTotalEmployeeCount = async (req, res) => {
 
 // Get total admin count
 exports.getTotalAdminCount = async (req, res) => {
+  const {domain} = req.params;
+  console.log(domain)
   try {
     const adminCount = await prisma.user.count({
-      where: { roleId: 1 }, // Assuming 'roleId' field identifies admin
+      where: {
+       organizationDomain: domain,
+       roleId: 2
+       }, // Assuming 'roleId' field identifies admin
     });
+   
     res.json({ count: adminCount });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch admin count' });
@@ -38,8 +55,16 @@ exports.getTotalAdminCount = async (req, res) => {
 
 // Get total learning paths count
 exports.getLearningPathCount = async (req, res) => {
+  const {domain} = req.params;
   try {
-    const learningPathCount = await prisma.learningPath.count();
+    const learningPathCount = await prisma.learningPath.count(
+      {
+        where:
+        {
+          organizationDomain:domain
+        }
+      }
+    );
     res.json({ count: learningPathCount });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch learning path count' });

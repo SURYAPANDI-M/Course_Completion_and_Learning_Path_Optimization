@@ -4,8 +4,8 @@ const prisma = new PrismaClient(); // Create a new Prisma client instance
 // Create a new course and assign it to a learning path
 exports.createCourse = async (req, res) => {
     try {
-        const { title, duration, difficultyLevel, description, learningPathId } = req.body;
-
+        const { title, duration, difficultyLevel, description, learningPathId,domain } = req.body;
+       console.log(req.body)
         // Convert learningPathId and duration to integers
         const learningPathIdInt = parseInt(learningPathId, 10);
         const durationInt = parseInt(duration, 10);
@@ -26,6 +26,7 @@ exports.createCourse = async (req, res) => {
                 duration: durationInt, // Use the converted integer
                 difficultyLevel,
                 description,
+                organizationDomain:domain
             },
         });
 
@@ -51,8 +52,16 @@ exports.createCourse = async (req, res) => {
 
 // Get all courses
 exports.getCourses = async (req, res) => {
+    const {domain} = req.params
     try {
-        const courses = await prisma.course.findMany(); // Fetch all courses
+        const courses = await prisma.course.findMany(
+            {
+                where:
+                {
+                    organizationDomain: domain
+                }
+            }
+        ); // Fetch all courses
 
         return res.status(200).json(courses);
     } catch (error) {

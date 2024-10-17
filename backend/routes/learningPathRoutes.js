@@ -6,7 +6,7 @@ const learningPathController = require('../controllers/learningPathController.js
 router.post('/', learningPathController.createLearningPath);
 
 // Route for getting all learning paths
-router.get('/', learningPathController.getLearningPaths);
+router.get('/:domain', learningPathController.getLearningPaths);
 
 // Route for getting a specific learning path by ID
 router.get('/:id', learningPathController.getLearningPathById);

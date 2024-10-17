@@ -1,9 +1,12 @@
 // // routes/userRoute.js
 
-// const express = require('express');
-// const {  getUserByEmail, updateUser, deleteUser } = require('../controllers/userController');
+const express = require('express');
+const {  getUserStats} = require('../controllers/userController');
 
-// const router = express.Router();
+const router = express.Router();
+
+
+router.get('/user/stats/:userId', getUserStats);
 
 // // Route to get all users
 // // router.get('/allusers', getAllUsers);
@@ -17,4 +20,4 @@
 // // Route to delete user
 // router.delete('/user/delete', deleteUser); // Delete a user by email
 
-// module.exports = router;
+module.exports = router;

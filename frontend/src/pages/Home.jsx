@@ -17,22 +17,23 @@ const Home = () => {
   const [completionHistory, setCompletionHistory] = useState([]); // New state for historical data
 
   useEffect(() => {
+    const domain = sessionStorage.getItem('domain')
     const fetchData = async () => {
       setLoading(true);
       try {
         // Fetch total user count
-        const usersResponse = await axios.get('http://localhost:3000/api/reports/users/count');
+        const usersResponse = await axios.get(`http://localhost:3000/api/reports/users/count/${domain}`);
         setTotalUsers(usersResponse.data.totalUsers);
         // Fetch total employee count
-        const employeesResponse = await axios.get('http://localhost:3000/api/reports/employees/count');
+        const employeesResponse = await axios.get(`http://localhost:3000/api/reports/employees/count/${domain}`);
         setTotalEmployees(employeesResponse.data.count);
 
         // Fetch total admin count
-        const adminResponse = await axios.get('http://localhost:3000/api/reports/admin/count');
+        const adminResponse = await axios.get(`http://localhost:3000/api/reports/admin/count/${domain}`);
         setTotalAdmins(adminResponse.data.count);
 
         // Fetch learning paths count
-        const pathsResponse = await axios.get('http://localhost:3000/api/reports/learning-paths/count');
+        const pathsResponse = await axios.get(`http://localhost:3000/api/reports/learning-paths/count/${domain}`);
         setLearningPaths(pathsResponse.data.count);
 
         // Fetch course completion rate

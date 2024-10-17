@@ -12,7 +12,8 @@ import AssignCourse from './AssignCourse';
 import CreateUser from './CreateUser';
 import Home from './pages/Home';
 import UserEnrollments from './employee/UserEnrollments';
-
+import Profile from './Profile';
+import EmployeeHome from './EmployeeHome';
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
 
         <Route path='/employee' element={<EmployeeDashboard />}>
           <Route path='enrollments' element={<UserEnrollments />} />
+          <Route path='profile' element={<Profile />} />
+          <Route path='home' element={<EmployeeHome />} />
           {/* Add more employee routes here */}
         </Route>
       </Routes>

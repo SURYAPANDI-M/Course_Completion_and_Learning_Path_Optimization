@@ -85,3 +85,28 @@ exports.deleteUser = async (req, res) => {
         return res.status(500).json({ error: 'An error occurred while deleting user.' });
     }
 };
+
+
+exports.getUserStats = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const enrollments = await prisma.enrollment.findMany({
+      where: { userId },
+      include: { course: true },
+    });
+
+    const totalCoursesEnrolled = enrollments.length;
+    const completedCourses = enrollments.filter(e => e.completionStatus === 'Completed').length;
+    
+    // Calculate total progress as the difference between total courses and completed courses
+    const totalProgress = totalCoursesEnrolled - completedCourses;
+
+    res.status(200).json({
+      completedCourses,          // Number of completed courses
+      totalProgress,             // Total progress count (incomplete courses)
+      totalCoursesEnrolled,      // Total number of courses enrolled
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user statistics', error });
+  }
+};

@@ -4,8 +4,8 @@ const prisma = new PrismaClient(); // Create a new Prisma client instance
 // Create a new learning path
 // Create a new learning path
 exports.createLearningPath = async (req, res) => {
-    const { title, description } = req.body;
-  
+    const { title, description, domain } = req.body;
+    console.log(domain)
     try {
       // Validate input
       if (!title || !description) {
@@ -27,11 +27,12 @@ exports.createLearningPath = async (req, res) => {
         return res.status(409).json({message: 'Course already is present'})
       }
   
-      // Create a new learning path using Prisma
+    //   Create a new learning path using Prisma
       const newLearningPath = await prisma.learningPath.create({
         data: {
           title,
           description,
+          organizationDomain:domain
         },
       });
   
@@ -43,8 +44,14 @@ exports.createLearningPath = async (req, res) => {
   };
 // Get all learning paths
 exports.getLearningPaths = async (req, res) => {
+    const {domain} = req.params
     try {
-        const learningPaths = await prisma.learningPath.findMany(); // Fetch all learning paths
+        const learningPaths = await prisma.learningPath.findMany({
+            where:
+            {
+                organizationDomain: domain
+            }
+        }); // Fetch all learning paths
 
         return res.status(200).json(learningPaths);
     } catch (error) {

@@ -11,10 +11,14 @@ const getDepartments = async (req, res) => {
 };
 
 const getUsersByDepartment = async (req, res) => {
-    const { departmentId } = req.params;
+    const { departmentId,domain } = req.params;
+    console.log(domain)
     try {
         const users = await prisma.user.findMany({
-            where: { departmentId: Number(departmentId) }
+            where: { 
+                departmentId: Number(departmentId) ,
+                organizationDomain: domain
+            }
         });
         res.json(users);
     } catch (error) {
@@ -33,6 +37,7 @@ const getLearningPaths = async (req, res) => {
 
 const getCoursesByLearningPath = async (req, res) => {
     const { learningPathId } = req.params;
+    console.log(req.params)
     try {
         const courses = await prisma.learningPathCourse.findMany({
             where: { learningPathId: Number(learningPathId) },
