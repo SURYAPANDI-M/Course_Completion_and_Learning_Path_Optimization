@@ -1,3 +1,6 @@
+// const response = await axios.get(`http://localhost:3000/api/user/profile/${userId}`);
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -5,6 +8,36 @@ import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for React Toas
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState(null);
+  const [role,setRole] = useState({});
+  const [department, setDepartment] = useState({});
+  const [designation ,setDesignation] = useState({});
+  const fetchRoles = async () => {
+    try {
+        const response = await axios.get('http://localhost:3000/api/roles'); // Endpoint for roles
+        setRole(()=> response.data.reduce((obj,item)=>({...obj, [item.id]:item.name}),{}));
+    } catch (error) {
+        console.error('Error fetching roles:', error);
+        toast.error('Error fetching roles.');
+    }
+};
+const fetchDesignations = async () => {
+  try {
+      const response = await axios.get('http://localhost:3000/api/designations');
+      setDesignation(()=> response.data.reduce((obj,item)=>({...obj, [item.id]:item.title}),{}));
+  } catch (error) {
+      console.error('Error fetching designations:', error);
+      toast.error('Error fetching designations.');
+  }
+};
+const fetchDepartments = async () => {
+  try {
+      const response = await axios.get('http://localhost:3000/api/assign/departments');
+      setDepartment(()=> response.data.reduce((obj,item)=>({...obj, [item.id]:item.name}),{}));
+  } catch (error) {
+      console.error('Error fetching departments:', error);
+      toast.error('Error fetching departments.');
+  }
+};
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -19,8 +52,12 @@ const Profile = () => {
     };
 
     fetchUserDetails();
+    fetchRoles();
+    fetchDepartments();
+    fetchDesignations();
   }, []);
 
+  console.log(designation);
   if (!userDetails) {
     return <div className="text-center text-gray-500 mt-6">Loading...</div>;
   }
@@ -46,17 +83,17 @@ const Profile = () => {
           </div>
 
           <div className="bg-gray-100 rounded-lg p-4 shadow">
-            <p className="text-lg font-semibold text-gray-700"><strong>Role ID:</strong> {userDetails.roleId}</p>
+            <p className="text-lg font-semibold text-gray-700"><strong>Role:</strong> {role[userDetails.roleId]}</p>
           </div>
           <div className="bg-gray-100 rounded-lg p-4 shadow">
             <p className="text-lg font-semibold text-gray-700"><strong>Joining Date:</strong> {new Date(userDetails.joiningDate).toLocaleDateString()}</p>
           </div>
 
           <div className="bg-gray-100 rounded-lg p-4 shadow">
-            <p className="text-lg font-semibold text-gray-700"><strong>Designation ID:</strong> {userDetails.designationId}</p>
+            <p className="text-lg font-semibold text-gray-700"><strong>Designation ID:</strong> {designation[userDetails.designationId]}</p>
           </div>
           <div className="bg-gray-100 rounded-lg p-4 shadow">
-            <p className="text-lg font-semibold text-gray-700"><strong>Department ID:</strong> {userDetails.departmentId}</p>
+            <p className="text-lg font-semibold text-gray-700"><strong>Department ID:</strong> {department[userDetails.departmentId]}</p>
           </div>
         </div>
       </div>

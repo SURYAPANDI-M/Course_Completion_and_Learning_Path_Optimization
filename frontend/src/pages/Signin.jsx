@@ -28,7 +28,7 @@ const Signin = () => {
                 sessionStorage.setItem('role', role);
                 sessionStorage.setItem('userId', userId);
               
-                navigate(role === "Employee" ? '/employee' : '/admin/home');
+                navigate(role === "Employee" ? '/employee/home' : '/admin/home');
             }
         } catch (err) {
             console.error('Login failed:', err);

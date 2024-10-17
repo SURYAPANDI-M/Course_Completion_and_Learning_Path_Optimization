@@ -34,9 +34,9 @@ function App() {
         </Route>
 
         <Route path='/employee' element={<EmployeeDashboard />}>
+          <Route path='home' element={<EmployeeHome />} />
           <Route path='enrollments' element={<UserEnrollments />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='home' element={<EmployeeHome />} />
           {/* Add more employee routes here */}
         </Route>
       </Routes>

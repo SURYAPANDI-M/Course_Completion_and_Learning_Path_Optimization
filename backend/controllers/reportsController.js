@@ -43,7 +43,7 @@ exports.getTotalAdminCount = async (req, res) => {
     const adminCount = await prisma.user.count({
       where: {
        organizationDomain: domain,
-       roleId: 2
+       roleId: 1
        }, // Assuming 'roleId' field identifies admin
     });
    

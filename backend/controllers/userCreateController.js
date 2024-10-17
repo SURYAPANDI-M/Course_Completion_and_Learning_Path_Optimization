@@ -25,7 +25,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const { name, employeeId, password, email, organizationDomain, designationId, departmentId } = req.body;
+    const { name, employeeId, password, email, organizationDomain, designationId, departmentId ,roleId} = req.body;
 
     try {
         const existingUser = await prisma.user.findUnique({
@@ -44,10 +44,10 @@ const createUser = async (req, res) => {
                 employeeId,
                 password: hashedPassword,
                 email,
-                organizationDomain, // This should come from the request
-                roleId: 1,
-                designationId, // No need to convert here since we expect it to be an integer
-                departmentId // Same for departmentId
+                organizationDomain, 
+                roleId: Number(roleId),
+                designationId, 
+                departmentId 
             }
         });
 
@@ -81,7 +81,7 @@ const getDesignations = async (req, res) => {
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { name, employeeId, password, email, organizationDomain, designationId, departmentId } = req.body;
+    const { name, employeeId, password, email, organizationDomain, designationId, departmentId,roleId } = req.body;
 
     try {
         const existingUser = await prisma.user.findUnique({ where: { employeeId: id } });
@@ -96,7 +96,8 @@ const updateUser = async (req, res) => {
             email,
             organizationDomain,
             designationId: parseInt(designationId),
-            departmentId: parseInt(departmentId)
+            departmentId: parseInt(departmentId),
+            roleId:Number(roleId)
         };
 
         if (password) {

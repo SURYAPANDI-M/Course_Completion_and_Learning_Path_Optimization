@@ -17,7 +17,8 @@ const getUsersByDepartment = async (req, res) => {
         const users = await prisma.user.findMany({
             where: { 
                 departmentId: Number(departmentId) ,
-                organizationDomain: domain
+                organizationDomain: domain,
+                roleId:2
             }
         });
         res.json(users);

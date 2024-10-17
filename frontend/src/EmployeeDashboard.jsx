@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState,useEffect } from 'react'; 
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { FaHome, FaUser, FaBook, FaSignOutAlt } from 'react-icons/fa';
 
@@ -13,10 +13,15 @@ const EmployeeDashboard = () => {
   const logout = () => {
     setTimeout(() => {
       localStorage.clear();
+      sessionStorage.clear();
       navigate('/');
     }, 1000);
   };
-
+  useEffect(()=>{
+    if(!sessionStorage.getItem('role')) {
+      navigate('/');
+    }
+  },[])
   return (
     <div className="flex h-screen bg-gradient-to-r from-blue-200 to-purple-300">
       {/* Sidebar */}
@@ -26,6 +31,11 @@ const EmployeeDashboard = () => {
         </button>
         <h2 className="text-2xl font-bold mb-4 text-center">Employee Menu</h2>
         <ul className="space-y-2">
+        <li>
+            <Link to="/employee/home" className="flex items-center p-2 hover:bg-blue-600 rounded transition duration-300">
+              <FaHome className="mr-2" /> Dashboard
+            </Link>
+          </li>
           <li>
             <Link to="/employee/enrollments" className="flex items-center p-2 hover:bg-blue-600 rounded transition duration-300">
               <FaBook className="mr-2" /> Enrollments
@@ -34,11 +44,6 @@ const EmployeeDashboard = () => {
           <li>
             <Link to="/employee/profile" className="flex items-center p-2 hover:bg-blue-600 rounded transition duration-300">
               <FaUser className="mr-2" /> Profile
-            </Link>
-          </li>
-          <li>
-            <Link to="/employee/home" className="flex items-center p-2 hover:bg-blue-600 rounded transition duration-300">
-              <FaHome className="mr-2" /> Home
             </Link>
           </li>
         </ul>

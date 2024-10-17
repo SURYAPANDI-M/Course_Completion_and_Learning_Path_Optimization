@@ -33,59 +33,6 @@ const prisma = new PrismaClient(); // Create a new Prisma client instance
 //     }
 // };
 
-// Get a user by email
-exports.getUserByEmail = async (req, res) => {
-    const { email } = req.params; // Get email from request parameters
-
-    try {
-        const user = await prisma.user.findUnique({ where: { email } });
-        
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        
-        return res.status(200).json(user);
-    } catch (error) {
-        console.error("Error fetching user by email:", error);
-        return res.status(500).json({ error: 'An error occurred while fetching user.' });
-    }
-};
-
-// Update user information by email
-exports.updateUser = async (req, res) => {
-    const {email, name, roleId, departmentId, designationId } = req.body; // Update fields
-    
-    try {
-        const updatedUser = await prisma.user.update({
-            where: { email },
-            data: {
-                name,
-                roleId,
-                departmentId,
-                designationId,
-            },
-        });
-        
-        return res.status(200).json({ message: 'User updated successfully', updatedUser });
-    } catch (error) {
-        console.error("Error updating user:", error);
-        return res.status(500).json({ error: 'An error occurred while updating user.' });
-    }
-};
-
-// Delete a user by email
-exports.deleteUser = async (req, res) => {
-    const { email } = req.body; // Get email from request parameters
-
-    try {
-        await prisma.user.delete({ where: { email } });
-        return res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-        console.error("Error deleting user:", error);
-        return res.status(500).json({ error: 'An error occurred while deleting user.' });
-    }
-};
-
 
 exports.getUserStats = async (req, res) => {
   const { userId } = req.params;
