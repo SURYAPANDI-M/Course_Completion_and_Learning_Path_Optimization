@@ -37,8 +37,8 @@ const Home = () => {
         setLearningPaths(pathsResponse.data.count);
 
         // Fetch course completion rate
-        const completionResponse = await axios.get('http://localhost:3000/api/reports/completion-rate');
-        setCompletionRate(completionResponse.data.completionRate);
+        const completionResponse = await axios.get(`http://localhost:3000/api/reports/completion-rate/${domain}`);
+        setCompletionRate(completionResponse.data.completionRate ? 0 :completionResponse.data.completionRate );
         console.log(completionResponse.data)
 
         // Fetch historical completion rates

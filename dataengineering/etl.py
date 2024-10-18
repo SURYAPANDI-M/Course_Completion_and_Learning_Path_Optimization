@@ -2,9 +2,9 @@ import pandas as pd
 import os
 
 # Paths for raw, prep, and report folders
-raw_path = r'D:\suryapandi\dataengineering\raw'
-prep_path = r'D:\suryapandi\dataengineering\prep'
-report_path = r'D:\suryapandi\dataengineering\reporting'
+raw_path = r'C:\Users\SuryaPandiM\Desktop\full_final_project\dataengineering\raw'
+prep_path = r'C:\Users\SuryaPandiM\Desktop\full_final_project\dataengineering\prep'
+report_path = r'C:\Users\SuryaPandiM\Desktop\full_final_project\dataengineering\reporting'
 
 # Create folders if they do not exist
 os.makedirs(raw_path, exist_ok=True)
@@ -13,12 +13,12 @@ os.makedirs(report_path, exist_ok=True)
 
 
 # Step 1: Load the raw data (RAW Layer)
-users = pd.read_csv(r'D:\suryapandi\fakedata\users.csv')
-courses = pd.read_csv(r'D:\suryapandi\fakedata\courses.csv')
-enrollments = pd.read_csv(r'D:\suryapandi\fakedata\enrollments.csv')
-course_completions = pd.read_csv(r'D:\suryapandi\fakedata\course_completions.csv')
-learning_paths = pd.read_csv(r'D:\suryapandi\fakedata\learning_paths.csv')
-performance_metrics = pd.read_csv(r'D:\suryapandi\fakedata\performance_metrics.csv')
+users = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\users.csv')
+courses = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\courses.csv')
+enrollments = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\enrollments.csv')
+course_completions = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\course_completions.csv')
+learning_paths = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\learning_paths.csv')
+performance_metrics = pd.read_csv(r'C:\Users\SuryaPandiM\Desktop\full_final_project\fakedata\performance_metrics.csv')
 
 # Save raw data to raw folder
 users.to_csv(os.path.join(raw_path, 'users_raw.csv'), index=False)
@@ -33,7 +33,7 @@ performance_metrics.to_csv(os.path.join(raw_path, 'performance_metrics_raw.csv')
 users_clean = users.drop(columns=['password', 'email'])
 enrollments_clean = enrollments.drop(columns=['lastUpdated'])
 courses_clean = courses.drop(columns=['description'])
-course_completions_clean = course_completions.dropna(subset=['certificateLink'])  # Example clean-up
+course_completions_clean = course_completions.drop(columns=['certificateLink'])  # Example clean-up
 
 # Save cleaned data to prep folder
 users_clean.to_csv(os.path.join(prep_path, 'users_prep.csv'), index=False)

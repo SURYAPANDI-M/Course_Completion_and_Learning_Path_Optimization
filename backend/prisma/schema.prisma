@@ -60,6 +60,7 @@ model Enrollment {
   completionDate   DateTime?
   lastUpdated      DateTime           @updatedAt
   percentage       Int
+  organizationDomain  String  
   userId           String              // Refers to employeeId in User model
   courseCompletion CourseCompletion[] 
   course           Course             @relation(fields: [courseId], references: [id])

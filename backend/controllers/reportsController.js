@@ -73,6 +73,7 @@ exports.getLearningPathCount = async (req, res) => {
 
 // Get course completion rate
 exports.getCourseCompletionRate = async (req, res) => {
+  const domain = req.params.domain;
   try {
     const totalCourses = await prisma.enrollment.count();
     const completedCourses = await prisma.enrollment.count({
