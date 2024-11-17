@@ -351,7 +351,7 @@ const AddCourse = () => {
       setIsOpen(false);
     } catch (error) {
       console.error('Error saving course:', error);
-      toast.error('Error saving course. Please try again.');
+      toast.error('Error saving course. Please try again.')
     }
   };
 
